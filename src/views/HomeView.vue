@@ -18,15 +18,20 @@
     <div class="container">
       <div 
       v-for="todo in todos"
+      :class="{'has-background-success-light' : todo.done}"
       class="card">
         <div class="card-content">
           <div class="content">
-            {{ todo.content }}
+            <div 
+            :class="{'has-text-success line-through' : todo.done}">{{ todo.content }}</div>
             <div class="btn-group">
-                <button class="button is-light">
+                <button 
+                @click="toggleDone(todo.id)"
+                :class="todo.done ? 'is-success' : 'is-light'"
+                class="button">
                   &check;
                 </button>
-                <button class="button is-danger">
+                <button @click="deleteTodo(todo.id)" class="button is-danger">
                   &cross;
                 </button>
             </div>
@@ -41,21 +46,21 @@
   import { v4 as uuidv4 } from 'uuid';
 
   const todos = ref ([
-    {
-      id: 'id1',
-      content: 'shave my butt',
-      done: false
-    },
-    {
-      id: 'id2',
-      content: 'washing clotch',
-      done: false
-    },
-    {
-      id: 'id3',
-      content: 'Coding a project',
-      done: false
-    },
+    // {
+    //   id: 'id1',
+    //   content: 'shave my butt',
+    //   done: false
+    // },
+    // {
+    //   id: 'id2',
+    //   content: 'washing clotch',
+    //   done: false
+    // },
+    // {
+    //   id: 'id3',
+    //   content: 'Coding a project',
+    //   done: false
+    // },
   ])
 
   const newTodo= ref('')
@@ -69,7 +74,17 @@
     todos.value.unshift(newTo)
     newTodo.value=''
   }
+
+  const deleteTodo = id => {
+    todos.value =todos.value.filter(todo => todo.id !==id)
+  }
+
+  const toggleDone = id => {
+    const index = todos.value.findIndex(todo => todo.id === id)
+    todos.value[index].done = !todos.value[index].done
+  }
 </script>
+
 <style>
 .input-form{
   display: flex;
@@ -82,6 +97,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.line-through{
+  text-decoration: line-through;
 }
 
 @media (min-width:1000px) {
