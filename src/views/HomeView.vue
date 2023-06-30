@@ -22,14 +22,20 @@
       class="card">
         <div class="card-content">
           <div class="content">
-            <div 
-            :class="{'has-text-success line-through' : todo.done}">{{ todo.content }}</div>
+            <div :class="{'has-text-success line-through' : todo.done}">
+
+              {{ todo.content }} <br><br>
+              
+              <span style="background-color:rgb(91, 194, 91);padding:5px 10px;border-radius:10px;">
+              {{todo.time}}</span>
+
+            </div>
             <div class="btn-group">
                 <button 
                 @click="toggleDone(todo.id)"
                 :class="todo.done ? 'is-success' : 'is-light'"
                 class="button">
-                  &check;
+                {{ todo.done ? 'Cancel' : '&check;' }}
                 </button>
                 <button @click="deleteTodo(todo.id)" class="button is-danger">
                   &cross;
@@ -42,50 +48,78 @@
   
 </template>
 <script setup>
-  import { ref } from 'vue';
-  import { v4 as uuidv4 } from 'uuid';
+  import { ref, onMounted } from 'vue';
+  import { collection, 
+        onSnapshot, 
+        getFirestore,
+        getDocs,
+        addDoc,
+        getDoc,
+        deleteDoc,
+        doc,
+        updateDoc, 
+        query, 
+        orderBy, 
+        limit} from "firebase/firestore"; 
+  import { db } from '@/firebase'
+  
+  const todosCollectionQuery = query(collection(db, "todos"), orderBy("time", "desc"), limit(10));
+  const todos = ref ([])
 
-  const todos = ref ([
-    // {
-    //   id: 'id1',
-    //   content: 'shave my butt',
-    //   done: false
-    // },
-    // {
-    //   id: 'id2',
-    //   content: 'washing clotch',
-    //   done: false
-    // },
-    // {
-    //   id: 'id3',
-    //   content: 'Coding a project',
-    //   done: false
-    // },
-  ])
+  onMounted(()=>{
+    onSnapshot(todosCollectionQuery, (querySnapshot) => {
+      const fbTodos = [];
+      querySnapshot.forEach((doc) => {
+        const todo = {
+        id: doc.id,
+        content: doc.data().content,
+        done: doc.data().done,
+        time: doc.data().time
+      }
+
+      fbTodos.push(todo)
+      });
+      todos.value = fbTodos
+    });
+
+  })
 
   const newTodo= ref('')
 
   const addTodo = () => {
-    const newTo ={
-      id: uuidv4(),
-      content:newTodo.value,
-      done:false,
-    }
-    todos.value.unshift(newTo)
+    addDoc(collection(db, "todos"), {
+      content: newTodo.value,
+      done: false,
+      time: new Date().toLocaleString(),
+    });
+    todos.value.unshift()
     newTodo.value=''
   }
 
   const deleteTodo = id => {
-    todos.value =todos.value.filter(todo => todo.id !==id)
+    deleteDoc(doc(db, "todos", id));
   }
 
   const toggleDone = id => {
     const index = todos.value.findIndex(todo => todo.id === id)
-    todos.value[index].done = !todos.value[index].done
+    updateDoc(doc(collection(db, "todos"), id), {
+      done: !todos.value[index].done
+    });
   }
 </script>
 
 <style>
+
+.card:hover{
+  transform: translateX(2px);
+  transform: rotateY(4deg);
+  background-color: rgb(172, 184, 184);
+  transition: 0.3s ease;
+  box-shadow: 2px 2px 15px whitesmoke;
+}
+
+
+
 .input-form{
   display: flex;
   justify-content: center;
@@ -126,7 +160,7 @@
 }
 
 .content .btn-group{
-  width: 100px;
+  width: 200px;
   display: flex;
   justify-content: space-between;
 }
