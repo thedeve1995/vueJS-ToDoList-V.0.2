@@ -1,4 +1,4 @@
-# weather-vue
+# To Do List By Vue 3 and Firebase V.0.2
 
 This template should help get you started developing with Vue 3 in Vite.
 
