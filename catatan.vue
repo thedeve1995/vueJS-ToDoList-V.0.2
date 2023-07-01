@@ -1,40 +1,24 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-
-function login() {
-  event.preventDefault();
-  var username = document.getElementById("username").value;
-  var password = document.getElementById("password").value;
-  
-  if (username === "dani95" && password === "dani1212") {
-    var loginContainer = document.querySelector(".login-container");
-    loginContainer.style.display = "none";
-  } else {
-    alert("Username atau password salah.");
-  }
-}
 </script>
 
 <template>
   <div class="login-container">
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="50" height="50" />
-
-    <h1 class="title has-text-white is-size-1" >ToDoList App</h1>
-    
+    <h2>Silakan Masuk</h2>
     <form>
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" required>
       
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" required>
-     
-      <button @click="login()" class="tombol-login">Masuk</button>
+      
+      <button type="submit">Masuk</button>
     </form>
   </div>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="50" height="50" />
 
-    <h1 class="title has-text-white is-size-1" >To Do List <br> (Dani Sepriyanto)</h1>
+    <h1 class="title has-text-white is-size-1" >To Do List App by Vue</h1>
 
     <div class="wrapper">
       <nav>
@@ -49,9 +33,10 @@ function login() {
 
 <style>
 @import 'node_modules\bulma\css\bulma.min.css';
+
 .login-container {
   position: fixed;
-  display: flex;
+  display: none;
   flex-direction: column;
   place-items: center;
   justify-content: center;
@@ -60,33 +45,29 @@ function login() {
   width: 100vw;
   height: 100vh;
   padding: 20px;
-  background-color: #3f3d3d;
+  background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
 
+h2 {
+  text-align: center;
+  color: #110c0c;
+  font-size: 35px;
 
+}
 
 form {
   margin-top: 20px;
   width: 35%;
 }
 
-@media (max-width:800px) {
-  form {
-  margin-top: 20px;
-  width: 90%;
-}
-}
-
 label {
   display: block;
   margin-bottom: 8px;
-  color: #e6e6e6;
-  
+  color: #666;
 }
-
 
 input[type="text"],
 input[type="password"] {
@@ -94,10 +75,9 @@ input[type="password"] {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
-  margin-bottom: 20px;
 }
 
-.tombol-login {
+button {
   display: block;
   width: 100%;
   padding: 10px;
@@ -110,9 +90,10 @@ input[type="password"] {
   cursor: pointer;
 }
 
-.tombol-login:hover {
+button:hover {
   background-color: #45a049;
 }
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -163,7 +144,5 @@ nav a:first-of-type {
   border: 0;
 }
 
-h1{
-  text-align: center;
-}
+
 </style>
