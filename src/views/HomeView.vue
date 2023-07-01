@@ -1,9 +1,23 @@
 <template lang="">
+  <h1 style="
+    font-size:30px;
+    text-align:center;
+    margin-top: 20px;
+    font-weight:700;
+    color:burlywood;
+    ">
+      DAFTAR TUGAS</h1> 
   <form @submit.prevent="addTodo">
       <div class="input-form">
         <div class="field has-addons">
           <div class="control">
             <input v-model="newTodo" class="input" type="text" placeholder="Add A Task" />
+          </div>
+          <div class="control">
+            <input v-model="author" class="input" type="text" placeholder="Your Name" />
+          </div>
+          <div class="control">
+            <input title="Deadline" v-model="deadline" class="input" type="date" placeholder="Deadline" />
           </div>
           <div class="control">
             <button :disabled="!newTodo" class="button is-info">
@@ -22,12 +36,24 @@
       class="card">
         <div class="card-content">
           <div class="content">
-            <div :class="{'has-text-success line-through' : todo.done}">
-
-              {{ todo.content }} <br><br>
+            <div :class="{'line-through' : todo.done}">
+              <h2 id="jobDone"></h2>
+              <h3>{{ todo.content }} </h3>
               
-              <span style="background-color:rgb(91, 194, 91);padding:5px 10px;border-radius:10px;">
-              {{todo.time}}</span>
+              <br>
+
+              <span style="color:black;background-color:#F86F03;padding:5px 10px;border-radius:10px;">
+              Author : {{todo.author}}</span>
+
+              <br><br>
+
+              <span style="color:black;background-color:#FFA41B;padding:5px 10px;border-radius:10px;">
+              Waktu : {{todo.time}}</span>
+
+              <br><br>
+
+              <span style="color:black;background-color:#FFF6F4;padding:5px 10px;border-radius:10px;">
+              Deadline : {{todo.deadline}}</span>
 
             </div>
             <div class="btn-group">
@@ -35,10 +61,10 @@
                 @click="toggleDone(todo.id)"
                 :class="todo.done ? 'is-success' : 'is-light'"
                 class="button">
-                {{ todo.done ? 'Cancel' : '&check;' }}
+                {{ todo.done ? 'Cancel' : 'Done ?' }}
                 </button>
                 <button @click="deleteTodo(todo.id)" class="button is-danger">
-                  &cross;
+                  Delete
                 </button>
             </div>
           </div>
@@ -74,7 +100,9 @@
         id: doc.id,
         content: doc.data().content,
         done: doc.data().done,
-        time: doc.data().time
+        time: doc.data().time,
+        author: doc.data().author,
+        deadline: doc.data().deadline
       }
 
       fbTodos.push(todo)
@@ -85,23 +113,35 @@
   })
 
   const newTodo= ref('')
+  const author= ref('')
+  const deadline= ref('')
+
+ 
 
   const addTodo = () => {
     addDoc(collection(db, "todos"), {
       content: newTodo.value,
       done: false,
       time: new Date().toLocaleString(),
+      author: author.value,
+      deadline: deadline.value
     });
     todos.value.unshift()
     newTodo.value=''
   }
 
-  const deleteTodo = id => {
+  const deleteTodo = async id => {
+  const deletedTask = await getDoc(doc(db, "todos", id));
+  if (deletedTask.exists()) {
+    const deletedData = deletedTask.data();
+    await addDoc(collection(db, "selesai"), deletedData);
     deleteDoc(doc(db, "todos", id));
   }
+}
+
 
   const toggleDone = id => {
-    const index = todos.value.findIndex(todo => todo.id === id)
+    const index = todos.value.findIndex(todo => todo.id === id);
     updateDoc(doc(collection(db, "todos"), id), {
       done: !todos.value[index].done
     });
@@ -115,10 +155,17 @@
   transform: rotateY(4deg);
   background-color: rgb(172, 184, 184);
   transition: 0.3s ease;
-  box-shadow: 2px 2px 15px whitesmoke;
+  box-shadow: 2px 2px 15px rgb(7, 6, 6);
 }
 
+.card {
+  background-color: burlywood;
+}
 
+.card h3{
+  color: black;
+  text-align: center;
+}
 
 .input-form{
   display: flex;

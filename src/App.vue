@@ -4,9 +4,9 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="50" height="50" />
 
-    <h1 class="title has-text-white" >To Do List App by Vue</h1>
+    <h1 class="title has-text-white is-size-1" >To Do List App by Vue</h1>
 
     <div class="wrapper">
       <nav>
