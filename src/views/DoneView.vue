@@ -22,35 +22,38 @@
             style="text-align: center"
             :class="{ 'line-through': task.done }"
           >
-            <h2 id="jobDone"></h2>
-            <h3>{{ task.content }}</h3>
-            <span
-              style="
+            <div style="
+                background-color: white;
                 color: black;
+                font-weight: 700;
                 padding: 5px 10px;
-                border-radius: 10px;
-                font-weight: 600;
-              "
-            >
-              Poster : {{ task.author }}</span
-            >
+                border-radius: 10px 10px 0 0;
+              ">
+              <h3>{{ task.content }}</h3>
+              <p
+                style="
+                  color: black;
+                  padding: 5px 10px;
+                  border-radius: 10px;
+                  font-weight: 600;
+                "
+              >
+                Poster : {{ task.author }}</p
+              >
+            </div>
 
-            <br /><br /><br />
-
-            <span
+            <p
               style="
                 color: black;
                 background-color: #ffa41b;
                 padding: 5px 10px;
-                border-radius: 10px;
+                border-radius: 0 0 10px 10px;
               "
             >
-              Posted @ {{ task.time }}</span
+              Posted @ {{ task.time }}</p
             >
 
-            <br /><br />
-
-            <span
+            <p
               style="
                 color: black;
                 background-color: #fff6f4;
@@ -58,11 +61,11 @@
                 border-radius: 10px;
               "
             >
-              Deadline : {{ task.deadline }}</span
+              Deadline : {{ task.deadline }}</p
             >
 
-            <br /><br />
-            <span
+            
+            <p
               style="
                 color: black;
                 background-color: #f86f03;
@@ -70,7 +73,7 @@
                 border-radius: 10px;
               "
             >
-              Done @ {{ task.doneTime }} | {{ task.doneDate }}</span
+              Done @ {{ task.doneTime }} | {{ task.doneDate }}</p
             >
           </div>
           <div class="btn-group">
@@ -152,9 +155,9 @@ const toggleDone = (id) => {
 }
 
 .task-card {
-  background-color: burlywood;
+  background-color: rgb(216, 161, 90);
   border-radius: 20px;
-  box-shadow: 0 0 10px gray;
+  box-shadow: 0 0 10px rgb(24, 23, 23);
 }
 
 .task-card h3 {

@@ -60,63 +60,72 @@
             style="text-align: center"
             :class="{ '-line-through-': todo.done }"
           >
-            <h2 id="jobDone"></h2>
-            <h3>{{ todo.content }}</h3>
-            <span
+            <div
               style="
+                background-color: white;
                 color: black;
-                background-color: #f86f03;
+                font-weight: 700;
                 padding: 5px 10px;
-                border-radius: 10px;
+                border-radius: 10px 10px 0 0;
               "
             >
-              Poster : {{ todo.author }}</span
-            >
-            <br />
-            <br /><br />
+              <h3>{{ todo.content }}</h3>
+              <p
+                style="
+                  color: black;
+                  font-weight: 700;
+                  padding: 5px 10px;
+                "
+              >
+                Poster : {{ todo.author }}
+              </p>
+            </div>
 
-            <span
+            <p
               style="
                 color: black;
                 background-color: #ffa41b;
                 padding: 5px 10px;
-                border-radius: 10px;
+                border-radius: 0 0 10px 10px;
               "
             >
-              Posted @ {{ todo.time }}</span
-            >
+              Posted@ | {{ todo.time }}
+            </p>
 
-            <br /><br />
-
-            <span
+            <p
               style="
-                color: white;
+                color: whitesmoke;
                 background-color: maroon;
+                width: 100%;
                 padding: 5px 10px;
                 border-radius: 10px;
-                margin-bottom: 20px;
               "
             >
-              Deadline : {{ todo.deadline }}</span
-            >
-            <br />
+              Deadline : {{ todo.deadline }}
+            </p>
+
             <div
               class="done-time"
               style="
-                margin-top: 10px;
-                background-color: lightgreen;
+                width: 100%;
+                background-color: #f86f03;
                 padding: 10px;
                 border-radius: 10px;
-                transform: scale(0.8);
+
                 width: 300px;
               "
             >
-              <h4>Done On</h4>
+              <h4 style="
+                color: whitesmoke;
+                width: 100%;
+                padding: 5px 10px;
+                border-radius: 10px;
+              ">Done On</h4>
               <label
                 for="doneDate"
                 style="
-                  color: black;
-                  font-size: 20px;
+                  color: whitesmoke;
+                  font-size: 15px;
                   margin-top: 10px;
                   text-align: left;
                 "
@@ -132,8 +141,8 @@
               />
               <label
                 style="
-                  color: black;
-                  font-size: 20px;
+                  color: whitesmoke;
+                  font-size: 15px;
                   margin-top: 10px;
                   text-align: left;
                 "
@@ -263,12 +272,13 @@ const toggleDone = (id) => {
   width: 350px;
   margin-bottom: 20px;
   border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 2px 2px 15px rgb(7, 6, 6);
 }
 
 .task-card:hover {
-  background-color: rgb(172, 184, 184);
-  transition: 0.3s ease;
-  box-shadow: 2px 2px 15px rgb(7, 6, 6);
+  transform: translateY(-10px);
+  transition: 0.5s ease-in-out;
 }
 
 .task-card h3 {
@@ -292,13 +302,14 @@ const toggleDone = (id) => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 
 @media (min-width: 1000px) {
   .container {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    
   }
 }
 
