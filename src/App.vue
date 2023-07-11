@@ -1,22 +1,22 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 
-function login() {
-  event.preventDefault();
-  var username = document.getElementById("username").value;
-  var password = document.getElementById("password").value;
+// function login() {
+//   event.preventDefault();
+//   var username = document.getElementById("username").value;
+//   var password = document.getElementById("password").value;
   
-  if (username === "dani95" && password === "dani1212") {
-    var loginContainer = document.querySelector(".login-container");
-    loginContainer.style.display = "none";
-  } else {
-    alert("Username atau password salah.");
-  }
-}
+//   if (username === "dani95" && password === "dani1212") {
+//     var loginContainer = document.querySelector(".login-container");
+//     loginContainer.style.display = "none";
+//   } else {
+//     alert("Username atau password salah.");
+//   }
+// }
 </script>
 
 <template>
-  <div class="login-container">
+  <!-- <div class="login-container">
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="50" height="50" />
 
     <h1 class="title has-text-white is-size-1" >ToDoList App</h1>
@@ -30,20 +30,20 @@ function login() {
      
       <button @click="login()" class="tombol-login">Masuk</button>
     </form>
-  </div>
+  </div> -->
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="50" height="50" />
-
-    <h1 class="title has-text-white is-size-1" >To Do List <br> (Dani Sepriyanto)</h1>
-
+    <h1 class="title has-text-white is-size-8" >My To Do List <br> <i>(Beta Version)</i></h1>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink> |
-        <RouterLink to="/done">Done</RouterLink>
+        <RouterLink to="/">Dani</RouterLink> |
+        <RouterLink to="/done">Done</RouterLink> |
+        <RouterLink to="/ferdi">Ferdi</RouterLink> |
+        <RouterLink to="/budi">Budi</RouterLink> |
+        <RouterLink to="/revi">Revi</RouterLink> |
+        <RouterLink to="/Surip">Surip</RouterLink> |
       </nav>
     </div>
   </header>
-
   <RouterView />
 </template>
 
@@ -84,35 +84,9 @@ label {
   display: block;
   margin-bottom: 8px;
   color: #e6e6e6;
-  
 }
 
 
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-bottom: 20px;
-}
-
-.tombol-login {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  border-radius: 4px;
-  border: none;
-  background-color: #4CAF50;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.tombol-login:hover {
-  background-color: #45a049;
-}
 header {
   line-height: 1.5;
   max-height: 100vh;

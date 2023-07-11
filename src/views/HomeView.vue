@@ -3,7 +3,9 @@
     <div class="input-form">
       <div class="field has-addons">
         <div class="control">
+          <label for="newTodo">Task</label>
           <input
+            id="newTodo"
             v-model="newTodo"
             class="input"
             type="text"
@@ -11,7 +13,9 @@
           />
         </div>
         <div class="control">
+          <label for="author">Poster</label>
           <input
+            id="author"
             v-model="author"
             class="input"
             type="text"
@@ -19,15 +23,27 @@
           />
         </div>
         <div class="control">
+          <label for="deadline">Deadline Date</label>
           <input
+            id="deadline"
             title="Deadline"
             v-model="deadline"
             class="input"
             type="date"
-            placeholder="Deadline"
+          />
+        </div>
+        <div class="control" id="dTime">
+          <label for="deadlineTime">Deadline Time</label>
+          <input
+            id="deadlineTime"
+            title="DeadlineTime"
+            v-model="deadlineTime"
+            class="input"
+            type="time"
           />
         </div>
         <div class="control">
+          <label style="color: transparent" for="">.</label>
           <button :disabled="!newTodo" class="button is-info">
             Tambah Tugas
           </button>
@@ -47,7 +63,7 @@
   >
     DAFTAR TUGAS
   </h1>
-
+  
   <div class="container">
     <div
       v-for="todo in todos"
@@ -70,13 +86,7 @@
               "
             >
               <h3>{{ todo.content }}</h3>
-              <p
-                style="
-                  color: black;
-                  font-weight: 700;
-                  padding: 5px 10px;
-                "
-              >
+              <p style="color: black; font-weight: 700; padding: 5px 10px">
                 Poster : {{ todo.author }}
               </p>
             </div>
@@ -101,63 +111,8 @@
                 border-radius: 10px;
               "
             >
-              Deadline : {{ todo.deadline }}
+              Deadline : {{ todo.deadline }} | {{ todo.deadlineTime }}
             </p>
-
-            <div
-              class="done-time"
-              style="
-                width: 100%;
-                background-color: #f86f03;
-                padding: 10px;
-                border-radius: 10px;
-
-                width: 300px;
-              "
-            >
-              <h4 style="
-                color: whitesmoke;
-                width: 100%;
-                padding: 5px 10px;
-                border-radius: 10px;
-              ">Done On</h4>
-              <label
-                for="doneDate"
-                style="
-                  color: whitesmoke;
-                  font-size: 15px;
-                  margin-top: 10px;
-                  text-align: left;
-                "
-                >Date</label
-              >
-              <input
-                title="Deadline"
-                v-model="doneDate"
-                class="input"
-                type="date"
-                placeholder="Deadline"
-                id="doneDate"
-              />
-              <label
-                style="
-                  color: whitesmoke;
-                  font-size: 15px;
-                  margin-top: 10px;
-                  text-align: left;
-                "
-                for="doneTime"
-                >Time</label
-              >
-              <input
-                title="Deadline"
-                v-model="doneTime"
-                class="input"
-                type="time"
-                placeholder="Deadline"
-                id="doneTime"
-              />
-            </div>
           </div>
           <div class="btn-group">
             <button
@@ -196,8 +151,8 @@ import { db } from "@/firebase";
 
 const todosCollectionQuery = query(
   collection(db, "todos"),
-  orderBy("time", "desc"),
-  limit(10)
+  orderBy("deadline", "asc"),
+  // limit(10)
 );
 const todos = ref([]);
 
@@ -212,19 +167,21 @@ onMounted(() => {
         time: doc.data().time,
         author: doc.data().author,
         deadline: doc.data().deadline,
+        deadlineTime: doc.data().deadlineTime,
       };
 
       fbTodos.push(todo);
     });
     todos.value = fbTodos;
   });
+
+  
 });
 
 const newTodo = ref("");
 const author = ref("");
 const deadline = ref("");
-const doneTime = ref("");
-const doneDate = ref("");
+const deadlineTime = ref("");
 
 const addTodo = () => {
   const todoData = {
@@ -233,6 +190,7 @@ const addTodo = () => {
     time: new Date().toLocaleString(),
     author: author.value,
     deadline: deadline.value,
+    deadlineTime: deadlineTime.value,
   };
 
   addDoc(collection(db, "todos"), todoData);
@@ -240,28 +198,37 @@ const addTodo = () => {
   newTodo.value = "";
   deadline.value = "";
   author.value = "";
+  deadlineTime.value = "";
 };
 
 const deleteTodo = async (id) => {
-  updateDoc(doc(db, "todos", id), {
-    doneTime: doneTime.value,
-    doneDate: doneDate.value,
-  });
+  let password = prompt("Tolong Passwordnya");
+  if (password === "dani1212") {
+    updateDoc(doc(db, "todos", id), {
+      doneTime: new Date().toLocaleString(),
+    });
 
-  const deletedTask = await getDoc(doc(db, "todos", id));
-  if (deletedTask.exists()) {
-    const deletedData = deletedTask.data();
-
-    await addDoc(collection(db, "selesai"), deletedData);
-    deleteDoc(doc(db, "todos", id));
+    const deletedTask = await getDoc(doc(db, "todos", id));
+    if (deletedTask.exists()) {
+      const deletedData = deletedTask.data();
+      await addDoc(collection(db, "selesai"), deletedData);
+      deleteDoc(doc(db, "todos", id));
+    }
+  } else {
+    alert("Password anda salah");
   }
 };
 
 const toggleDone = (id) => {
-  const index = todos.value.findIndex((todo) => todo.id === id);
-  updateDoc(doc(collection(db, "todos"), id), {
-    done: !todos.value[index].done,
-  });
+  let password = prompt("Tolong Passwordnya");
+  if (password === "dani1212") {
+    const index = todos.value.findIndex((todo) => todo.id === id);
+    updateDoc(doc(collection(db, "todos"), id), {
+      done: !todos.value[index].done,
+    });
+  } else {
+    alert("Password anda salah")
+  }
 };
 </script>
 
@@ -288,6 +255,10 @@ const toggleDone = (id) => {
 
 .addform {
   width: 100%;
+  margin-top: 50px;
+  background-color: rgb(22, 22, 22);
+  padding: 10px 30px 30px 20px;
+  border-radius: 20px;
 }
 
 .input-form {
@@ -309,7 +280,6 @@ const toggleDone = (id) => {
   .container {
     flex-direction: row;
     flex-wrap: wrap;
-    
   }
 }
 
@@ -335,18 +305,23 @@ const toggleDone = (id) => {
   }
   .input-form .field .control {
     width: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
   }
-  .input-form .field .control:last-child {
-    margin-top: 10px;
-  }
+
   .input-form .field .control input {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
   .input-form .field .control button {
     width: 100%;
+  }
+  .input-form .field .control label:not(:first-child) {
+    margin-top: 10px;
+  }
+  #dTime {
+    margin-top: 20px;
   }
 }
 </style>
