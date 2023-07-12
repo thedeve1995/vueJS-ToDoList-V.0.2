@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DoneView from '../views/DoneView.vue'
-import FerdiView from '../views/FerdiView.vue'
-import BudiView from '../views/BudiView.vue'
-import ReviView from '../views/ReviView.vue'
-import SuripView from '../views/SuripView.vue'
+import PinjamBarang from '../views/PinjamBarang.vue'
+import PinjamSelesai from '../views/PinjamSelesai.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,24 +13,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/ferdi',
-      name: 'ferdi',
-      component: FerdiView
+      path: '/pinjam',
+      name: 'pinjam',
+      component: PinjamBarang
     },
     {
-      path: '/budi',
-      name: 'budi',
-      component: BudiView
-    },
-    {
-      path: '/revi',
-      name: 'revi',
-      component: ReviView
-    },
-    {
-      path: '/surip',
-      name: 'surip',
-      component: SuripView
+      path: '/pinjamSelesai',
+      name: 'pinjamSelesai',
+      component: PinjamSelesai
     },
     {
       path: '/done',

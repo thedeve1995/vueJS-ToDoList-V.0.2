@@ -35,12 +35,10 @@ import { RouterLink, RouterView } from 'vue-router'
     <h1 class="title has-text-white is-size-8" >My To Do List <br> <i>(Beta Version)</i></h1>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Dani</RouterLink> |
-        <RouterLink to="/done">Done</RouterLink> |
-        <RouterLink to="/ferdi">Ferdi</RouterLink> |
-        <RouterLink to="/budi">Budi</RouterLink> |
-        <RouterLink to="/revi">Revi</RouterLink> |
-        <RouterLink to="/Surip">Surip</RouterLink> |
+        <RouterLink to="/">Tugas</RouterLink> |
+        <RouterLink to="/done">Tugas Done</RouterLink> |
+        <RouterLink to="/pinjam">Pinjam Barang</RouterLink> |
+        <RouterLink to="/pinjamSelesai">Barang Selesai </RouterLink> |
       </nav>
     </div>
   </header>
