@@ -41,28 +41,30 @@
                 Poster : {{ task.author }}</p
               >
             </div>
+            <div>
 
-            <p
-              style="
-                color: black;
-                background-color: #ffa41b;
-                padding: 5px 10px;
-                border-radius: 0 0 10px 10px;
-              "
-            >
-              Posted @ {{ task.time }}</p
-            >
-
-            <p
+              <p
+                style="
+                  color: black;
+                  background-color: #ffa41b;
+                  padding: 5px 10px;
+                "
+              >
+                Posted @ {{ task.time }}
+              </p>
+            </div>
+            <div>
+              <p
               style="
                 color: black;
                 background-color: #fff6f4;
                 padding: 5px 10px;
-                border-radius: 10px;
               "
             >
               Deadline : {{ task.deadline }}</p
             >
+            </div>
+            
 
             
             <p
@@ -70,7 +72,7 @@
                 color: black;
                 background-color: #f86f03;
                 padding: 5px 10px;
-                border-radius: 10px;
+                border-radius: 0 0 10px 10px;
               "
             >
               Done @ {{ task.doneTime }}</p

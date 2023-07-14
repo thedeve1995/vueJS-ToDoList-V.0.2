@@ -39,6 +39,8 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/done">Tugas Done</RouterLink> |
         <RouterLink to="/pinjam">Pinjam Barang</RouterLink> |
         <RouterLink to="/pinjamSelesai">Barang Selesai </RouterLink> |
+        <RouterLink to="/barangMasuk">Barang Masuk </RouterLink> |
+        <RouterLink to="/perbaikan">Perbaikan </RouterLink> 
       </nav>
     </div>
   </header>
@@ -103,7 +105,7 @@ header .title{
 
 nav {
   width: 100%;
-  font-size: 25px;
+  font-size: 15px;
   text-align: center;
   margin-top: 2rem;
 }
@@ -121,6 +123,7 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
+  margin-top: 10px;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
   color: white;

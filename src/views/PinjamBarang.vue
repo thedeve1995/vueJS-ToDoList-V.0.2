@@ -9,13 +9,13 @@
             v-model="naMe"
             class="input"
             type="text"
-            placeholder="Add A Task"
+            placeholder="Ketik Nama Dulu"
           />
         </div>
         <div class="control">
           <label for="barang">Barang (Detail)</label>
           <textarea
-            style="height:100px;width:250px"
+            style="height:100px;width:300px"
             id="barang"
             v-model="barang"
             class="input"
@@ -63,7 +63,7 @@
         </div>
         <div class="control">
           <label style="color: transparent" for="">.</label>
-          <button class="button is-info">
+          <button :disabled="!naMe" class="button is-info">
             Ajukan Pinjam
           </button>
         </div>
@@ -109,17 +109,19 @@
                 Poster : {{ barangPinjaman.name }}
               </p>
             </div>
+            <div>
+              <p
+                style="
+                  color: black;
+                  background-color: #fff;
+                  padding: 5px 10px;
+                  
+                "
+              >
+                Posted@ | {{ barangPinjaman.time }}
+              </p>
 
-            <p
-              style="
-                color: black;
-                background-color: #ffa41b;
-                padding: 5px 10px;
-                border-radius: 0 0 10px 10px;
-              "
-            >
-              Posted@ | {{ barangPinjaman.time }}
-            </p>
+            </div>
 
             <p
               style="
@@ -270,7 +272,7 @@ const toggleDone = (id) => {
 };
 </script>
 
-<style>
+<style scoped>
 .task-card {
   background-color: burlywood;
   padding: 0;

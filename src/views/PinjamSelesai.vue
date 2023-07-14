@@ -110,16 +110,17 @@
               </p>
             </div>
 
-            <p
-              style="
-                color: black;
-                background-color: #ffa41b;
-                padding: 5px 10px;
-                border-radius: 0 0 10px 10px;
-              "
-            >
-              Dikembalikan = {{ barangPinjaman.doneTime }}
-            </p>
+            <div>
+              <p
+                style="
+                  color: black;
+                  background-color: #fff;
+                  padding: 5px 10px;
+                "
+              >
+                Dikembalikan = {{ barangPinjaman.doneTime }}
+              </p>
+            </div>
 
             <p
               style="
@@ -271,7 +272,7 @@ onMounted(() => {
 // };
 </script>
 
-<style>
+<style scoped>
 .task-card {
   background-color: burlywood;
   padding: 0;

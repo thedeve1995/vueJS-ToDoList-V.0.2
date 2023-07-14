@@ -51,22 +51,39 @@
       </div>
     </div>
   </form>
+  <div style="display:flex; 
+              width:100%; 
+              justify-content:center;
+              align-items:center;
+              gap:20px;
+              flex-direction:column">
+    <h1
+      style="
+        font-size: 30px;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: 700;
+        color: burlywood;
+      "
+    >
+      DAFTAR TUGAS
+    </h1>
+    <div>
+      <label style="text-align:center;font-size:20px;" for="">Filter</label>
+      <input
+              style="width:250px;padding:5px 20px; font-size:15px; text-align:center;border-radius:10px"
+              v-model="filterDate"
+              type="date"
+              @change="filterTodos"
+              placeholder="Filter by Date"
+            />
+    </div>
+    
+  </div>
 
-  <h1
-    style="
-      font-size: 30px;
-      text-align: center;
-      margin-top: 20px;
-      font-weight: 700;
-      color: burlywood;
-    "
-  >
-    DAFTAR TUGAS
-  </h1>
-  
   <div class="container">
     <div
-      v-for="todo in todos"
+      v-for="todo in filteredTodos"
       :class="{ 'has-background-success-light': todo.done }"
       class="task-card"
     >
@@ -151,12 +168,16 @@ import { db } from "@/firebase";
 
 const todosCollectionQuery = query(
   collection(db, "todos"),
-  orderBy("deadline", "asc"),
+  orderBy("deadline", "asc")
   // limit(10)
 );
 const todos = ref([]);
 
 onMounted(() => {
+  loadTodos();
+});
+
+const loadTodos = () => {
   onSnapshot(todosCollectionQuery, (querySnapshot) => {
     const fbTodos = [];
     querySnapshot.forEach((doc) => {
@@ -173,15 +194,17 @@ onMounted(() => {
       fbTodos.push(todo);
     });
     todos.value = fbTodos;
+    filteredTodos.value = fbTodos; // Mengatur daftar tugas yang difilter dengan daftar tugas awal
   });
-
-  
-});
+};
 
 const newTodo = ref("");
 const author = ref("");
 const deadline = ref("");
 const deadlineTime = ref("");
+const filterDate = ref("");
+
+
 
 const addTodo = () => {
   const todoData = {
@@ -227,12 +250,27 @@ const toggleDone = (id) => {
       done: !todos.value[index].done,
     });
   } else {
-    alert("Password anda salah")
+    alert("Password anda salah");
   }
 };
+
+const filteredTodos = ref([]);
+
+const filterTodos = () => {
+  if (!filterDate.value) {
+    filteredTodos.value = todos.value;
+    return;
+  }
+
+  const selectedDate = new Date(filterDate.value).toDateString();
+  filteredTodos.value = todos.value.filter(
+    (todo) => new Date(todo.deadline).toDateString() === selectedDate
+  );
+};
+
 </script>
 
-<style>
+<style scoped>
 .task-card {
   background-color: burlywood;
   padding: 0;
