@@ -1,0 +1,33 @@
+.title {
+    text-align: center;
+    margin-top: 20px;
+    color: antiquewhite;
+  }
+  
+  .form-container {
+    max-width: 400px;
+    margin: 20px auto;
+  }
+  
+  .request-card {
+    background-color: burlywood;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .status-control {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(97, 22, 22);
+    padding: 10px 20px;
+    justify-content: center;
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .status-control select {
+    margin-left: 10px;
+    height: 30px;
+    padding: 0px 20px;
+  }

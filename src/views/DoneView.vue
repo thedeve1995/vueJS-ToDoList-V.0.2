@@ -10,9 +10,20 @@
   >
     Tugas Yang Telah Di Selesaikan
   </h1>
+  <div class="filter-form" >
+    <label for="filterDate">Filter by Date:</label>
+    <input
+      style="height:30px;padding:10px 30px;font-size:17px"
+      v-model="filterDate"
+      type="date"
+      @change="filterTasks"
+      placeholder="Filter by Date"
+    />
+  </div>
   <div class="container">
     <div
-      v-for="task in tasks"
+      v-for="task in filteredTasks"
+      :key="task.id"
       :class="{ 'has-background-success-light': task.done }"
       class="task-card"
     >
@@ -22,13 +33,15 @@
             style="text-align: center"
             :class="{ 'line-through': task.done }"
           >
-            <div style="
+            <div
+              style="
                 background-color: white;
                 color: black;
                 font-weight: 700;
                 padding: 5px 10px;
                 border-radius: 10px 10px 0 0;
-              ">
+              "
+            >
               <h3>{{ task.content }}</h3>
               <p
                 style="
@@ -38,11 +51,10 @@
                   font-weight: 600;
                 "
               >
-                Poster : {{ task.author }}</p
-              >
+                Poster: {{ task.author }}
+              </p>
             </div>
             <div>
-
               <p
                 style="
                   color: black;
@@ -55,18 +67,15 @@
             </div>
             <div>
               <p
-              style="
-                color: black;
-                background-color: #fff6f4;
-                padding: 5px 10px;
-              "
-            >
-              Deadline : {{ task.deadline }}</p
-            >
+                style="
+                  color: black;
+                  background-color: #fff6f4;
+                  padding: 5px 10px;
+                "
+              >
+                Deadline: {{ task.deadline }}
+              </p>
             </div>
-            
-
-            
             <p
               style="
                 color: black;
@@ -75,26 +84,35 @@
                 border-radius: 0 0 10px 10px;
               "
             >
-              Done @ {{ task.doneTime }}</p
-            >
+              Done @ {{ task.doneTime }}
+            </p>
           </div>
           <div class="btn-group">
             <button
               @click="toggleDone(task.id)"
-              :class="task.done ? 'is-success' : 'is-light'"
-              class="button is-danger"
+              :class="task.done ? 'is-light' : 'is-danger'"
+              class="button"
             >
-              <!-- {{ task.done ? "Cancel" : "Done ?" }} -->
-              Cancel Done ?
+              {{ task.done ? "Cancel Done ?" : "Done ?" }}
             </button>
+
+            <button
+              @click="deleteThis(task.id)"
+              :class="task.done ? 'is-light' : 'is-danger'"
+              class="button"
+            >
+              Delete
+            </button>
+            
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import {
   collection,
   onSnapshot,
@@ -110,17 +128,23 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase";
 
-// Import dan inisialisasi Firebase
-
 const tasksCollectionQuery = query(
   collection(db, "selesai"),
   orderBy("time", "desc")
 );
 const tasks = ref([]);
-
-// Fungsi-fungsi untuk mengelola tugas
+const filterDate = ref("");
+const filteredTasks = ref([]);
 
 onMounted(() => {
+  loadTasks();
+});
+
+watch(filterDate, () => {
+  filterTasks();
+});
+
+const loadTasks = () => {
   onSnapshot(tasksCollectionQuery, (querySnapshot) => {
     const fbTasks = [];
     querySnapshot.forEach((doc) => {
@@ -132,28 +156,50 @@ onMounted(() => {
         author: doc.data().author,
         deadline: doc.data().deadline,
         doneTime: doc.data().doneTime,
-        
       };
       fbTasks.push(task);
     });
     tasks.value = fbTasks;
+    filterTasks();
   });
-});
+};
 
-// Fungsi-fungsi untuk menambahkan, menghapus, dan mengubah status tugas
+const deleteThis = async (id) => {
+  let password = prompt("Tolong Passwordnya");
+  if (password === "dani1212") {
+      deleteDoc(doc(db, "selesai", id));
+  } else {
+    alert("Password anda salah");
+  }
+};
 
-const toggleDone =async (id) => {
-  // const index = tasks.value.findIndex((task) => task.id === id);
-  // updateDoc(doc(collection(db, "selesai"), id), {
-  //   done: !tasks.value[index].done,
-  // });
+const filterTasks = () => {
+  if (!filterDate.value) {
+    filteredTasks.value = tasks.value;
+  } else {
+    const selectedDate = new Date(filterDate.value);
+    filteredTasks.value = tasks.value.filter((task) => {
+      const doneTime = new Date(task.doneTime);
+      return doneTime.toDateString() === selectedDate.toDateString();
+    });
+  }
+};
 
-  
-  const deletedTask = await getDoc(doc(db, "selesai", id));
-  if (deletedTask.exists()) {
-    const deletedData = deletedTask.data();
-    await addDoc(collection(db, "todos"), deletedData);
-    deleteDoc(doc(db, "selesai", id));
+const toggleDone = async (id) => {
+  const task = tasks.value.find((t) => t.id === id);
+  if (task) {
+    if (task.done) {
+      await updateDoc(doc(db, "selesai", id), {
+        done: false,
+      });
+      await addDoc(collection(db, "todos"), task);
+      await deleteDoc(doc(db,"selesai",id))
+    } else {
+      await updateDoc(doc(db, "selesai", id), {
+        done: true,
+      });
+      await deleteDoc(doc(db, "todos", id));
+    }
   }
 };
 </script>
@@ -176,8 +222,10 @@ const toggleDone =async (id) => {
   text-align: center;
 }
 
-.input-form {
+.filter-form {
   display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: center;
   margin-top: 20px;
 }
@@ -193,6 +241,12 @@ const toggleDone =async (id) => {
   text-decoration: line-through;
 }
 
+.btn-group{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 @media (min-width: 1000px) {
   .container {
     flex-direction: row;

@@ -227,8 +227,11 @@ const addTodo = () => {
 const deleteTodo = async (id) => {
   let password = prompt("Tolong Passwordnya");
   if (password === "dani1212") {
+    const currentDate = new Date();
+    const formattedDate = formatDate(currentDate);
+
     updateDoc(doc(db, "todos", id), {
-      doneTime: new Date().toLocaleString(),
+      doneTime: formattedDate,
     });
 
     const deletedTask = await getDoc(doc(db, "todos", id));
@@ -241,6 +244,13 @@ const deleteTodo = async (id) => {
     alert("Password anda salah");
   }
 };
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}/${month}/${day}`;
+}
 
 const toggleDone = (id) => {
   let password = prompt("Tolong Passwordnya");

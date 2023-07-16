@@ -191,6 +191,7 @@
   }
   
   .container {
+    flex-wrap: wrap;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -205,7 +206,7 @@
     gap: 30px;
   }
   
-  @media (max-width: 800px) {
+  @media (max-width: 600px) {
     .input-form .field {
       flex-direction: column;
       place-items: center;

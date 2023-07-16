@@ -35,11 +35,12 @@ import { RouterLink, RouterView } from 'vue-router'
     <h1 class="title has-text-white is-size-8" >My To Do List <br> <i>(Beta Version)</i></h1>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Tugas</RouterLink> |
-        <RouterLink to="/done">Tugas Done</RouterLink> |
-        <RouterLink to="/pinjam">Pinjam Barang</RouterLink> |
-        <RouterLink to="/pinjamSelesai">Barang Selesai </RouterLink> |
-        <RouterLink to="/barangMasuk">Barang Masuk </RouterLink> |
+        <RouterLink to="/">Tugas</RouterLink> 
+        <RouterLink to="/done">Tugas Done</RouterLink> 
+        <RouterLink to="/buyrequest">Request Beli</RouterLink> 
+        <RouterLink to="/pinjam">Pinjam Barang</RouterLink> 
+        <RouterLink to="/pinjamSelesai">Pinjam Selesai </RouterLink> 
+        <RouterLink to="/barangMasuk">Barang Masuk </RouterLink> 
         <RouterLink to="/perbaikan">Perbaikan </RouterLink> 
       </nav>
     </div>
@@ -49,36 +50,12 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <style>
 @import 'node_modules\bulma\css\bulma.min.css';
-.login-container {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding: 20px;
-  background-color: #3f3d3d;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-
-
 form {
   margin-top: 20px;
   width: 35%;
 }
 
-@media (max-width:800px) {
-  form {
-  margin-top: 20px;
-  width: 90%;
-}
-}
+
 
 label {
   display: block;
@@ -140,5 +117,21 @@ nav a:first-of-type {
 
 h1{
   text-align: center;
+}
+
+@media (max-width:800px) {
+  form {
+  margin-top: 20px;
+  width: 90%;
+}
+
+  nav a{
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  }
 }
 </style>

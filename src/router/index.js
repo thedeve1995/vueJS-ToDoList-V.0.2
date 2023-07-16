@@ -5,6 +5,7 @@ import PinjamBarang from '../views/PinjamBarang.vue'
 import PinjamSelesai from '../views/PinjamSelesai.vue'
 import BarangMasuk from '../views/BarangMasuk.vue'
 import PerbaikanBarang from '../views/PerbaikanBarang.vue'
+import RequestBeli from '../views/RequestBeli.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/perbaikan',
       name: 'perbaikan',
       component: PerbaikanBarang
+    },
+    {
+      path: '/buyrequest',
+      name: 'buyrequest',
+      component: RequestBeli
     },
     {
       path: '/done',

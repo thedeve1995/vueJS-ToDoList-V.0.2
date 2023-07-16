@@ -2,70 +2,85 @@
   <form class="addform" @submit.prevent="addTodo">
     <div class="input-form">
       <div class="field has-addons">
-        <div class="control">
-          <label for="naMe">Nama Peminjam</label>
-          <input
-            id="naMe"
-            v-model="naMe"
-            class="input"
-            type="text"
-            placeholder="Ketik Nama Dulu"
-          />
+        <div class="field-row">
+          <div class="control">
+            <label for="naMe">Nama Peminjam</label>
+            <input
+              id="naMe"
+              v-model="naMe"
+              class="input"
+              type="text"
+              placeholder="Ketik Nama Dulu"
+            />
+          </div>
+          <div class="control">
+            <label for="barang">Barang (Detail)</label>
+            <textarea
+              style="height: 40px; width: 100%"
+              id="barang"
+              v-model="barang"
+              class="input"
+              type="text"
+              placeholder="Jangan lupa Jumlah"
+              rows="4"
+              cols="10"
+            ></textarea>
+          </div>
+          <div class="control">
+            <label for="keperluan">Keperluan</label>
+            <input
+              id="keperluan"
+              v-model="keperluan"
+              class="input"
+              type="text"
+              placeholder="Ketik Keperluan"
+            />
+          </div>
+          <div class="control">
+            <label for="tglPinjam">Tanggal Pinjam</label>
+            <input
+              id="tglPinjam"
+              v-model="tglPinjam"
+              class="input"
+              type="date"
+            />
+          </div>
         </div>
-        <div class="control">
-          <label for="barang">Barang (Detail)</label>
-          <textarea
-            style="height:100px;width:300px"
-            id="barang"
-            v-model="barang"
-            class="input"
-            type="text"
-            placeholder="Jangan lupa Jumlah"
-            rows="4" cols="10"
-          ></textarea>
-        </div>
-        <div class="control">
-          <label for="tglPinjam">Tanggal Pinjam</label>
-          <input
-            id="tglPinjam"
-            v-model="tglPinjam"
-            class="input"
-            type="date"
-          />
-        </div>
-        <div class="control" id="dTime">
-          <label for="jamPinjam">Jam Pinjam</label>
-          <input
-            id="jamPinjam"
-            title="DeadlineTime"
-            v-model="jamPinjam"
-            class="input"
-            type="time"
-          />
-        </div>
-        <div class="control">
-          <label for="tglKembali">Tanggal Kembali</label>
-          <input
-            id="tglKembali"
-            v-model="tglKembali"
-            class="input"
-            type="date"
-          />
-        </div>
-        <div class="control" id="dTime">
-          <label for="jamKembali">Jam Kembali</label>
-          <input
-            id="jamKembali"
-            v-model="jamKembali"
-            class="input"
-            type="time"
-          />
-        </div>
-        <div class="control">
-          <label style="color: transparent" for="">.</label>
-          <button :disabled="!naMe" class="button is-info">
-            Ajukan Pinjam
-          </button>
+        <div class="field-row">
+          <div class="control" id="dTime">
+            <label for="jamPinjam">Jam Pinjam</label>
+            <input
+              id="jamPinjam"
+              title="DeadlineTime"
+              v-model="jamPinjam"
+              class="input"
+              type="time"
+            />
+          </div>
+          <div class="control">
+            <label for="tglKembali">Tanggal Kembali</label>
+            <input
+              id="tglKembali"
+              v-model="tglKembali"
+              class="input"
+              type="date"
+            />
+          </div>
+          <div class="control" id="dTime">
+            <label for="jamKembali">Jam Kembali</label>
+            <input
+              id="jamKembali"
+              v-model="jamKembali"
+              class="input"
+              type="time"
+            />
+          </div>
+          <div class="control">
+            <label style="color: transparent" for="">.</label>
+            <button :disabled="!naMe" class="button is-info">
+              Ajukan Pinjam
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -82,10 +97,21 @@
   >
     DAFTAR BARANG PINJAMAN
   </h1>
-  
+
+  <div class="filter" style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <label style="text-align:center;font-size:20px;" for="filterDate">Filter Tanggal:</label>
+    <input style="width:250px;padding:5px 20px; font-size:15px; text-align:center;border-radius:10px"
+      id="filterDate"
+      v-model="filterDate"
+      class="input"
+      type="date"
+      @input="applyFilter"
+    />
+  </div>
+
   <div class="container">
     <div
-      v-for="barangPinjaman in barangPinjamans"
+      v-for="barangPinjaman in filteredBarangPinjamans"
       :class="{ 'has-background-success-light': barangPinjaman.done }"
       class="task-card"
     >
@@ -105,22 +131,17 @@
               "
             >
               <h3>{{ barangPinjaman.barang }}</h3>
+              <h4>Untuk : {{ barangPinjaman.keperluan }}</h4>
               <p style="color: black; font-weight: 700; padding: 5px 10px">
-                Poster : {{ barangPinjaman.name }}
+                Poster: {{ barangPinjaman.name }}
               </p>
             </div>
             <div>
               <p
-                style="
-                  color: black;
-                  background-color: #fff;
-                  padding: 5px 10px;
-                  
-                "
+                style="color: black; background-color: #fff; padding: 5px 10px"
               >
                 Posted@ | {{ barangPinjaman.time }}
               </p>
-
             </div>
 
             <p
@@ -131,7 +152,8 @@
                 border-radius: 0 0 10px 10px;
               "
             >
-              Waktu Pakai | {{ barangPinjaman.tglPinjam }} @ {{ barangPinjaman.jamPinjam }}
+              Waktu Pakai | {{ barangPinjaman.tglPinjam }} @
+              {{ barangPinjaman.jamPinjam }}
             </p>
 
             <p
@@ -143,7 +165,8 @@
                 border-radius: 10px;
               "
             >
-              Waktu Kembali : {{ barangPinjaman.tglKembali }} | {{ barangPinjaman.jamKembali }}
+              Waktu Kembali: {{ barangPinjaman.tglKembali }} |
+              {{ barangPinjaman.jamKembali }}
             </p>
           </div>
           <div class="btn-group">
@@ -154,7 +177,10 @@
             >
               {{ barangPinjaman.done ? "In Use..." : "Receive" }}
             </button>
-            <button @click="deleteTodo(barangPinjaman.id)" class="button is-danger">
+            <button
+              @click="deleteTodo(barangPinjaman.id)"
+              class="button is-danger"
+            >
               &check; done?
             </button>
           </div>
@@ -163,8 +189,9 @@
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import {
   collection,
   onSnapshot,
@@ -183,7 +210,7 @@ import { db } from "@/firebase";
 
 const barangCollectionQuery = query(
   collection(db, "barangPinjamans"),
-  orderBy("tglPinjam", "asc"),
+  orderBy("tglPinjam", "asc")
   // limit(10)
 );
 const barangPinjamans = ref([]);
@@ -198,6 +225,7 @@ onMounted(() => {
         done: doc.data().done,
         time: doc.data().time,
         barang: doc.data().barang,
+        keperluan: doc.data().keperluan,
         tglPinjam: doc.data().tglPinjam,
         jamPinjam: doc.data().jamPinjam,
         tglKembali: doc.data().tglKembali,
@@ -208,16 +236,31 @@ onMounted(() => {
     });
     barangPinjamans.value = fbBarangPinjamans;
   });
+});
 
-  
+const applyFilter = () => {
+  // Menghapus spasi di awal dan akhir tanggal filter
+  filterDate.value = filterDate.value.trim();
+};
+
+const filteredBarangPinjamans = computed(() => {
+  if (filterDate.value === "") {
+    return barangPinjamans.value;
+  } else {
+    return barangPinjamans.value.filter(
+      (barangPinjaman) => barangPinjaman.tglPinjam === filterDate.value
+    );
+  }
 });
 
 const naMe = ref("");
 const barang = ref("");
+const keperluan = ref("");
 const tglPinjam = ref("");
 const jamPinjam = ref("");
 const tglKembali = ref("");
 const jamKembali = ref("");
+const filterDate = ref("");
 
 const addTodo = () => {
   const todoData = {
@@ -225,6 +268,7 @@ const addTodo = () => {
     done: false,
     time: new Date().toLocaleString(),
     barang: barang.value,
+    keperluan: keperluan.value,
     tglPinjam: tglPinjam.value,
     jamPinjam: jamPinjam.value,
     tglKembali: tglKembali.value,
@@ -237,6 +281,7 @@ const addTodo = () => {
   tglPinjam.value = "";
   tglKembali.value = "";
   barang.value = "";
+  keperluan.value = "";
   jamPinjam.value = "";
   jamKembali.value = "";
 };
@@ -262,12 +307,14 @@ const deleteTodo = async (id) => {
 const toggleDone = (id) => {
   let password = prompt("Tolong Passwordnya");
   if (password === "dani1212") {
-    const index = barangPinjamans.value.findIndex((barangPinjaman) => barangPinjaman.id === id);
+    const index = barangPinjamans.value.findIndex(
+      (barangPinjaman) => barangPinjaman.id === id
+    );
     updateDoc(doc(collection(db, "barangPinjamans"), id), {
       done: !barangPinjamans.value[index].done,
     });
   } else {
-    alert("Password anda salah")
+    alert("Password anda salah");
   }
 };
 </script>
@@ -306,6 +353,24 @@ const toggleDone = (id) => {
   justify-content: center;
   margin-top: 20px;
   align-items: center;
+}
+
+.input-form .field {
+  gap: 20px;
+
+  width: 80%;
+}
+
+.field-row {
+  width: 100%;
+}
+
+.input-form .field .control button {
+  width: 100%;
+}
+.input-form .field .control {
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .container {
