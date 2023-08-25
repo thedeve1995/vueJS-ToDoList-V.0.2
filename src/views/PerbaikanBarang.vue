@@ -43,7 +43,7 @@
         </div>
         <div class="control">
           <label style="color: transparent">.</label>
-          <button class="button is-info">Tambah Riwayat Perbaikan</button>
+          <button :disabled="!namaBarang" class="button is-info">Tambah Riwayat Perbaikan</button>
         </div>
       </div>
     </div>

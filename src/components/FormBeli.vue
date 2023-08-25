@@ -51,9 +51,7 @@
         <div class="control">
           <label style="color: transparent" for="">.</label>
           <button
-            :disabled="
-              !nama || !barang || !jumlah || !tanggalPakai || !jamPakai
-            "
+            :disabled="!nama || !barang || !jumlah || !tanggalPakai || !jamPakai"
             class="button is-info"
           >
             Submit
@@ -63,5 +61,39 @@
     </div>
   </form>
 </template>
-<script></script>
+<script setup>
+import { ref } from "vue";
+import {
+  collection,
+  addDoc,
+} from "firebase/firestore";
+import { db } from "@/firebase";
+
+const nama = ref("");
+const barang = ref("");
+const jumlah = ref("");
+const tanggalPakai = ref("");
+const jamPakai = ref("");
+
+const submitRequest = async () => {
+  const newRequest = {
+    nama: nama.value,
+    barang: barang.value,
+    jumlah: jumlah.value,
+    tanggalPakai: tanggalPakai.value,
+    jamPakai: jamPakai.value,
+    status: "Belum Beli",
+  };
+
+  await addDoc(collection(db, "buyRequest"), newRequest);
+  nama.value = "";
+  barang.value = "";
+  jumlah.value = "";
+  tanggalPakai.value = "";
+  jamPakai.value = "";
+
+  loadBuyRequests();
+};
+</script>
+
 <style></style>

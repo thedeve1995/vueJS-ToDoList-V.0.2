@@ -32,7 +32,7 @@ import { RouterLink, RouterView } from 'vue-router'
     </form>
   </div> -->
   <header>
-    <h1 class="title has-text-white is-size-8" >My To Do List <br> <i>(Beta Version)</i></h1>
+    <h1 class="title has-text-white is-size-8" >Sarpras<br> TK-SMP-SMA <br> Islam De Green Camp</h1>
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Tugas</RouterLink> 
