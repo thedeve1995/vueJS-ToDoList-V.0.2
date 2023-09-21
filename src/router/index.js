@@ -6,6 +6,7 @@ import PinjamSelesai from '../views/PinjamSelesai.vue'
 import BarangMasuk from '../views/BarangMasuk.vue'
 import PerbaikanBarang from '../views/PerbaikanBarang.vue'
 import RequestBeli from '../views/RequestBeli.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,14 @@ const router = createRouter({
       component: BarangMasuk
     },
     {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+      meta :{
+        requiresAuth:false,
+      }
+    },
+    {
       path: '/perbaikan',
       name: 'perbaikan',
       component: PerbaikanBarang
@@ -50,5 +59,31 @@ const router = createRouter({
     }
   ]
 })
+
+const getCurrentUser=()=>{
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user)=> {
+        removeListener();
+        resolve(user)
+      },
+      reject
+    )
+  })
+}
+
+router.beforeEach(async(to, from, next) =>{
+  if(to.matched.some((record) => record.meta.requiresAuth)){
+    if(await getCurrentUser()){
+      next()
+    } else {
+      alert("You Dont Have Access ! Please Log In")
+      next("/login")
+    }
+  }else {
+    next()
+  }
+});
 
 export default router

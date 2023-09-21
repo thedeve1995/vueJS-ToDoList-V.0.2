@@ -1,5 +1,42 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { onMounted, ref } from "vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import router from "./router";
+const isLoggedIn = ref(false);
+
+let user = ref(null); // Menambahkan inisialisasi variabel user
+
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      isLoggedIn.value = true;
+      user.value = firebaseUser; // Menyimpan informasi pengguna dalam variabel user
+    } else {
+      isLoggedIn.value = false;
+      user.value = null; // Reset informasi pengguna saat keluar
+    }
+  });
+});
+
+let auth;
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true;
+    } else {
+      isLoggedIn.value = false;
+    }
+  });
+});
+
+const handleSignOut = () => {
+  signOut(auth).then(() => {
+    router.push("/");
+  });
+};
 
 // function login() {
 //   event.preventDefault();
@@ -41,7 +78,10 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/pinjam">Pinjam Barang</RouterLink> 
         <RouterLink to="/pinjamSelesai">Pinjam Selesai </RouterLink> 
         <RouterLink to="/barangMasuk">Barang Masuk </RouterLink> 
-        <RouterLink to="/perbaikan">Perbaikan </RouterLink> 
+        <RouterLink to="/perbaikan">Perbaikan </RouterLink>
+        <RouterLink to="/login">Login </RouterLink>
+        <p class="user" v-if="isLoggedIn">{{ user.email.slice(0,7) }}</p> |
+        <button @click="handleSignOut" v-if="isLoggedIn" style="padding: 5px 10px;border-radius: 10px;">Sign Out</button>
       </nav>
     </div>
   </header>
